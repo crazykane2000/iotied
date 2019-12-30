@@ -11,12 +11,37 @@
                 <a class="c-sidebar__link" href="dashboard.php">
                   <i class="c-sidebar__icon feather icon-home"></i>Dashboard 
                 </a>
-              </li>              
+              </li>    
+
+              <li>
+                <a class="c-sidebar__link" href="dashboard.php">
+                  <i class="c-sidebar__icon feather icon-home"></i>Plans 
+                </a>
+              </li>   
+
+               <li>
+                <a class="c-sidebar__link" href="dashboard.php">
+                  <i class="c-sidebar__icon feather icon-home"></i>Iotied Wallet 
+                </a>
+              </li>    
+
+              <li>
+                <a class="c-sidebar__link" href="dashboard.php">
+                  <i class="c-sidebar__icon feather icon-home"></i>Support
+                </a>
+              </li>  
+
+               <li>
+                <a class="c-sidebar__link" href="dashboard.php">
+                  <i class="c-sidebar__icon feather icon-home"></i>Smart Contracts
+                </a>
+              </li>    
+
             </ul>
 
             <span class="c-sidebar__title">Transactions</span>
             <ul class="c-sidebar__list">
-              <li>
+              <!-- <li>
                 <a class="c-sidebar__link" href="pipeline.html">
                   <i class="c-sidebar__icon feather icon-user"></i>Credit to Bank
                 </a>
@@ -25,10 +50,16 @@
                 <a class="c-sidebar__link" href="calendar.html">
                   <i class="c-sidebar__icon feather icon-user"></i>Requests
                 </a>
-              </li>
+              </li> -->
               <li>
                 <a class="c-sidebar__link" href="members.html">
                   <i class="c-sidebar__icon feather icon-users"></i>Transactions
+                </a>
+              </li>
+
+              <li>
+                <a class="c-sidebar__link" href="members.html">
+                  <i class="c-sidebar__icon feather icon-users"></i>Whitelisted Producers
                 </a>
               </li>
              
