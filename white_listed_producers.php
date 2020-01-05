@@ -27,23 +27,7 @@
         <?php include 'header.php'; ?>
 
         <div class="container-fluid">
-          <?php include 'dashboard_stats.php'; ?>
-
-          <form action="search_handle.php" method="POST">
-            <div style="padding: 30px;background-color: #fff;box-shadow: 0px 0px 10px #eee;">
-              <div class="row">
-                <div class="col-8">
-                   <input type="text" name="search_term" style="padding: 10px;width: 100%;border:solid 1px #eee;" placeholder="Enter ICT Code, Desiese">
-                </div>
-                <div class="col-3">
-                   <button class="c-btn c-btn--info" style="width: 100%;padding: 10px;">Search Data</button>
-                </div>
-              </div>      
-            </div>
-          </form>
-
-          <div style="padding: 15px;"></div>
-
+          
           
 
           <?php $curl = curl_init();
@@ -158,40 +142,7 @@
                       }
                      ?>
 
-                     <tr class="c-table__row">
-                                <td class="c-table__cell">
-                                  <div class="o-media">
-                                    <div class="o-media__img u-mr-xsmall">
-                                      <div class="c-avatar c-avatar--small">
-                                        <img class="c-avatar__img" src="img/download.jpg" alt="">
-                                      </div>
-                                    </div>
-                                    <div class="o-media__body">
-                                      <h6 style="font-size:12px;cursor:pointer;font-weight:bold" data-toggle="modal" data-target="#modal1" >DepEyEGkiOQAOXp...</h6>
-                                      <p>Raipur, Chhattisgarh</p>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td class="c-table__cell">785</td>
-                                <th class="c-table__cell" title="">0x8db058e3......</th>
-                                <td class="c-table__cell">India</td>
-                                <td class="c-table__cell">
-                                  <span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>cholera</span>
-                                  <span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>Poik</span>
-                                </td>
-                                <td><label class="c-badge c-badge--danger c-badge--small" style="">Not Contacted</label></td>
-                                <td class="c-table__cell">
-                                  <div class="c-dropdown dropdown">
-                                    <a href="#" class="c-btn c-btn--info has-icon dropdown-toggle" id="dropdownMenuTable1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      More <i class="feather icon-chevron-down"></i>
-                                    </a>
-
-                                    <div class="c-dropdown__menu dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuTable1">
-                                      <a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['address'].'">Request Access</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
+                     
 
                    
                   </tbody>

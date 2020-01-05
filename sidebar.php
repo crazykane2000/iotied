@@ -17,16 +17,23 @@
                 <a class="c-sidebar__link" href="dashboard.php">
                   <i class="c-sidebar__icon feather icon-home"></i>Plans 
                 </a>
-              </li>   
+              </li> 
 
                <li>
-                <a class="c-sidebar__link" href="dashboard.php">
-                  <i class="c-sidebar__icon feather icon-home"></i>Iotied Wallet 
+                <a class="c-sidebar__link" href="kyc.php">
+                  <i class="c-sidebar__icon feather icon-home"></i>KYC
+                </a>
+              </li>    
+  
+
+               <li>
+                <a class="c-sidebar__link" href="wallet.php">
+                  <i class="c-sidebar__icon feather icon-home"></i>My Wallet 
                 </a>
               </li>    
 
               <li>
-                <a class="c-sidebar__link" href="dashboard.php">
+                <a class="c-sidebar__link" href="support.php">
                   <i class="c-sidebar__icon feather icon-home"></i>Support
                 </a>
               </li>  
@@ -52,13 +59,18 @@
                 </a>
               </li> -->
               <li>
-                <a class="c-sidebar__link" href="members.html">
+                <a class="c-sidebar__link" href="transactions.php">
                   <i class="c-sidebar__icon feather icon-users"></i>Transactions
                 </a>
               </li>
-
+               
+               <li>
+                <a class="c-sidebar__link" href="view_producers.php">
+                  <i class="c-sidebar__icon feather icon-users"></i>Total Producers
+                </a>
+              </li>
               <li>
-                <a class="c-sidebar__link" href="members.html">
+                <a class="c-sidebar__link" href="white_listed_producers.php">
                   <i class="c-sidebar__icon feather icon-users"></i>Whitelisted Producers
                 </a>
               </li>

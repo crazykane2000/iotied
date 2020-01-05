@@ -3,6 +3,7 @@
     include 'administrator/function.php';
     $pdo_auth = authenticate();
     $pdo = new PDO($dsn, $user, $pass, $opt);  
+    error_reporting(E_ALL & ~E_NOTICE);
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,7 +26,7 @@
       <main class="o-page__content">
         <?php include 'header.php'; ?>
 
-        <div class="container">
+        <div class="container-fluid">
          
           <?php $curl = curl_init();
               curl_setopt_array($curl, array(
@@ -86,9 +87,26 @@
 
 
                       foreach ($response as $key => $value) {
-                        if ($value['patientData']['ICD Codes']!=$_REQUEST['search_term']) {
-                          continue;
+                        
+                        $disease_tags = $value['patientData']['Disease Tags'];
+                        //echo "<br/>".$disease_tags;
+                        //$disease_tags = explode(",",  $disease_tags);
+                        //print_r($disease_tags);
+                       
+
+                        if ($value['patientData']['ICD Codes']==$_REQUEST['search_term'] || strpos($disease_tags, trim($_REQUEST['search_term'])) !== false) {
+                          //echo "Kno"; Do Nothing Bhaiya 
                         }
+                        else{continue;}
+
+
+                        // if(){
+                        //     echo "Word Found!";
+                        // } else{
+                        //     echo "Word Not Found!";
+                        // }
+
+                        //print_r($_REQUEST['search_term']);
 
                         $tt = '';
                         if (!in_array(getIfSet($value['patientData']['Disease Tags']), $value)) {
@@ -102,12 +120,7 @@
                           $tt = '';
                         }            
 
-                        echo '<tr class="c-table__row">
-                                <td>
-                                  <div class="c-choice c-choice--checkbox">
-                                    <input class="" id="checkbox1" style="padding:10px;margin-left:30px;" type="checkbox">
-                                  </div>
-                                </td>
+                         echo '<tr class="c-table__row">
                                 <td class="c-table__cell">
                                   <div class="o-media">
                                     <div class="o-media__img u-mr-xsmall">
@@ -116,17 +129,18 @@
                                       </div>
                                     </div>
                                     <div class="o-media__body">
-                                      <h6>'.$value['patientData']['First Name']." ".$value['patientData']['Last Name'].'</h6>
+                                      <h6 style="font-size:12px;cursor:pointer;font-weight:bold" data-toggle="modal" data-target="#modal1" >'.substr($value['patientAddress'], 0,16).'...</h6>
                                       <p>'.$value['patientData']['City'].", ".$value['patientData']['State'].", ".$value['patientData']['County'].'</p>
                                     </div>
                                   </div>
                                 </td>
-                                <td class="c-table__cell">'.$value['patientData']['County'].'</td>
-                                <th class="c-table__cell">'.$value['patientData']['ICD Codes'].'</th>
-                                <td class="c-table__cell">'.$value['patientData']['DOB'].'</td>
+                                <td class="c-table__cell">'.$value['blockNumber'].'</td>
+                                <th class="c-table__cell" title="'.$value['patientAddress'].'">'.substr($value['patientAddress'], 0,10).'...</th>
+                                <td class="c-table__cell">'.ucfirst($value['patientData']['County']).'</td>
                                 <td class="c-table__cell">
-                                  '.$tt.'
+                                  '.$tt."<span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>".$value['patientData']['ICD Codes']."</span>".'
                                 </td>
+                                <td><label class="c-badge c-badge--success c-badge--small" style="">Whitelisted</label></td>
                                 <td class="c-table__cell">
                                   <div class="c-dropdown dropdown">
                                     <a href="#" class="c-btn c-btn--info has-icon dropdown-toggle" id="dropdownMenuTable1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -134,7 +148,8 @@
                                     </a>
 
                                     <div class="c-dropdown__menu dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuTable1">
-                                      <a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['address'].'">View Data</a>
+                                      <a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['address'].'">Show Details</a>
+                                      <a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['address'].'">Request Access</a>
                                     </div>
                                   </div>
                                 </td>
@@ -147,38 +162,13 @@
                 </table>
               </div>
             </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-12">
-              <footer class="c-footer">
-                <p>© 2018 <?php echo $pdo_auth['name']; ?>, Inc</p>
-                <span class="c-footer__divider">|</span>
-                <nav>
-                  <a class="c-footer__link" href="#">Terms</a>
-                  <a class="c-footer__link" href="#">Privacy</a>
-                  <a class="c-footer__link" href="#">FAQ</a>
-                  <a class="c-footer__link" href="#">Help</a>
-                </nav>
-              </footer>
-            </div>
-          </div>
+          </div>          
+          <?php include 'footer.php';  ?>
         </div>
       </main>
     </div>
     <script src="js/neat.minc619.js?v=1.0"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88739867-5"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-
-      gtag('config', 'UA-88739867-5');
-
-    </script>
+    
   </body>
 
 </html>

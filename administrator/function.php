@@ -106,6 +106,103 @@ function add_notification($notification, $for){
     }
   }
 
+  function get_patients(){
+    $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+        CURLOPT_PORT => "3005",
+        CURLOPT_URL => "http://13.233.7.230:3005/api/dataManager/get/patients",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_POSTFIELDS => "",
+        CURLOPT_HTTPHEADER => array(
+          "Content-Type: application/json",
+          "Postman-Token: adb3abb8-a944-46ed-970c-9adb99d79441",
+          "cache-control: no-cache"
+        ),
+      ));
+
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+
+      curl_close($curl);
+
+      if ($err) {
+        return "cURL Error #:" . $err;
+      } else {
+        return $response;
+      }
+  }
+
+  function add_wallet_balance($tx_address,$amount){
+      $data = "{\n  \"_userAddress\": \"$tx_address\",\n  \"_amount\": \"$amount\"\n}";
+      $curl = curl_init();
+      curl_setopt_array($curl, array(
+        CURLOPT_PORT => "3005",
+        CURLOPT_URL => "http://13.233.7.230:3005/api/dataManager/add/tokens",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $data,
+        CURLOPT_HTTPHEADER => array(
+          "Content-Type: application/json",
+          "Postman-Token: 30f7c551-fc70-4927-9e6c-df6a9515e5a8",
+          "cache-control: no-cache"
+        ),
+      ));
+
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+
+      curl_close($curl);
+
+      if ($err) {
+        return "cURL Error #:" . $err;
+      } else {
+        return $response;
+      }
+  }
+
+
+  function get_wallet_balance($tx_address){
+    $curl = curl_init();
+
+      curl_setopt_array($curl, array(
+        CURLOPT_PORT => "3005",
+        CURLOPT_URL => "http://13.233.7.230:3005/api/dataManager/get/walletBalance",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "{\n  \"_userAddress\": \"$tx_address\"\n}",
+        CURLOPT_HTTPHEADER => array(
+          "Content-Type: application/json",
+          "Postman-Token: b428899c-b522-474b-93d4-0deecb6f5be3",
+          "cache-control: no-cache"
+        ),
+      ));
+
+      $response = curl_exec($curl);
+      $err = curl_error($curl);
+
+      curl_close($curl);
+
+      if ($err) {
+        return "cURL Error #:" . $err;
+      } else {
+        return $response;
+      }
+  }
+
   function authenticate_franchie(){
     if(isset($_SESSION['card_id'], $_SESSION['pin']))
       {

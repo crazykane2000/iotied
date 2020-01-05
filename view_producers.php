@@ -27,23 +27,7 @@
         <?php include 'header.php'; ?>
 
         <div class="container-fluid">
-          <?php include 'dashboard_stats.php'; ?>
-
-          <form action="search_handle.php" method="POST">
-            <div style="padding: 30px;background-color: #fff;box-shadow: 0px 0px 10px #eee;">
-              <div class="row">
-                <div class="col-8">
-                   <input type="text" name="search_term" style="padding: 10px;width: 100%;border:solid 1px #eee;" placeholder="Enter ICT Code, Desiese">
-                </div>
-                <div class="col-3">
-                   <button class="c-btn c-btn--info" style="width: 100%;padding: 10px;">Search Data</button>
-                </div>
-              </div>      
-            </div>
-          </form>
-
-          <div style="padding: 15px;"></div>
-
+          
           
 
           <?php $curl = curl_init();

@@ -36,10 +36,10 @@
              <div class="c-field">
               <label class="c-field__label">Login as</label>
               <select class="c-input u-mb-small" name="type" required>
-                <option>Patient</option>
+               <option>Laboratory</option>
                 <option>Hospital</option>
                 <option>Pharmacy </option>
-                <option>Research Institute</option>
+                <option>Insuarance Company</option>
               </select>
             </div>
 

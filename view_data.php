@@ -34,7 +34,7 @@
       <main class="o-page__content">
         <?php include 'header.php'; ?>
 
-        <div class="container">
+        <div class="container-fluid">
           <?php include 'dashboard_stats.php'; ?>
 
           <?php $curl = curl_init();
@@ -108,36 +108,12 @@
             </div>
           </div>
           
-          <div class="row">
-            <div class="col-12">
-              <footer class="c-footer">
-                <p>© 2018 <?php echo $pdo_auth['name']; ?>, Inc</p>
-                <span class="c-footer__divider">|</span>
-                <nav>
-                  <a class="c-footer__link" href="#">Terms</a>
-                  <a class="c-footer__link" href="#">Privacy</a>
-                  <a class="c-footer__link" href="#">FAQ</a>
-                  <a class="c-footer__link" href="#">Help</a>
-                </nav>
-              </footer>
-            </div>
-          </div>
+          <?php include 'footer.php'; ?>
         </div>
       </main>
     </div>
     <script src="js/neat.minc619.js?v=1.0"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-88739867-5"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-
-      gtag('config', 'UA-88739867-5');
-
-    </script>
+    
   </body>
 
 </html>
