@@ -125,9 +125,9 @@
                               $user = $stmt->fetchAll();   
                               $i=1; 
                               foreach($user as $key=>$value){
-                                  $statys = '<label class="label label-info">Pending</label>';
+                                  $statys = '<label class="c-badge c-badge--small c-badge--danger">Pending</label>';
                                   if($value['status']!="Pending"){
-                                  $statys = '<label class="label label-default">Approved</label>';
+                                  $statys = '<label class="c-badge c-badge--small c-badge--success">Approved</label>';
                                 }
 
                                 echo '<tr>

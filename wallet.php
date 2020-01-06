@@ -2,7 +2,8 @@
     include 'administrator/connection.php';
     include 'administrator/function.php';
     $pdo_auth = authenticate();
-    $pdo = new PDO($dsn, $user, $pass, $opt);  
+    $pdo = new PDO($dsn, $user, $pass, $opt); 
+    $price_bbt = 1; 
 ?>
 <!doctype html>
 <html lang="en">
@@ -77,6 +78,8 @@
                         </tr>
                     </tbody>
                 </table>
+                <div style="padding: 10px;"></div>
+                <button class="c-btn c-btn--large" data-toggle="modal" data-target="#modal1a">Pay and Buy Iotied Tokens</button>
               </div>
 
               <div class="c-tabs__pane" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -87,7 +90,10 @@
                   <div style="padding: 14px;background-color: #064971;color:#fff;width: 80%">
                       Please Transfer your BTC to Above Address, and Update the Amount Sent and Iotied Token Requested. Once We Get BTC in Our Wallet we will Recharge you wallet with equivelent amount of Iotied Token.
                   </div>
+                  <div style="padding: 10px;"></div>
+                  <button class="c-btn c-btn--large" data-toggle="modal" data-target="#modal1b">Buy From BTC</button>
                 </center>
+
               </div>
               <div class="c-tabs__pane" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <center>
@@ -97,26 +103,140 @@
                   <div style="padding: 14px;background-color: #064971;color:#fff;width: 80%">
                       Please Transfer your Etherium to Above Address, and Update the Amount Sent and Iotied Token Requested. Once We Get BTC in Our Wallet we will Recharge you wallet with equivelent amount of Iotied Token.
                   </div>
+                  <div style="padding: 10px;"></div>
+                  <button class="c-btn c-btn--large" data-toggle="modal" data-target="#modal1c">Buy From ETH</button>
                 </center>
               </div>
             </div>
           </nav>
 
 
-          <button class="c-btn c-btn--large" data-toggle="modal" data-target="#modal1a">Pay and Buy Iotied Tokens</button>
-          <div class="c-modal modal fade" id="modal1a" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true" style="display: none;">
+          
+                <div class="c-modal modal fade" id="modal1a" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true" style="display: none;">
                     <div class="c-modal__dialog modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="c-card u-p-medium u-mh-auto" style="max-width:500px;">
-                                <h3>Modal Title</h3>
-                                <p class="u-text-mute u-mb-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum similique, dolores dolorem perferendis inventore illum dicta. Nostrum, officiis alias distinctio deleniti aliquid eum dolorum sed fugit omnis molestias! Magnam, animi.</p>
-                                <button class="c-btn c-btn--info" data-dismiss="modal">
-                                    Ok, just close this modal
-                                </button>
+                                <h3 style="font-size: 20px;">Please Enter Details for Buying Iotied Tokens</h3>
+                                <p>1$ = 1 Iotied Token</p>
+                                <hr style="margin:20px 0px;opacity: .2">
+                                <form action="buy_handle.php" method="POST">
+                                 <div style="padding: 0px;">
+                                   <div class="form-group">
+                                     <label class="c-field__label">Enter Amount</label>
+                                     <input type="text" name="amount" id="amty" value="000" class="c-input u-mb-small" placeholder="Enter Dollar Here">
+                                   </div>
+                                   <div class="form-group">
+                                     <label class="c-field__label">Total Iotied Token</label>
+                                     <input type="text" name="bbt" value="000" id="bbty" class="c-input u-mb-small" placeholder="Enter No. of Iotied Token to Buy">
+                                   </div>
+                                   <input type="hidden" name="currency" value="Dollar">
+
+                                     <div class="form-group">
+                                     <label class="c-field__label">Enter Transaction Id</label>
+                                     <input type="text" name="tx_idd" id="tx_idd" value="0x<?php echo random_strings(30); ?>"  class="c-input u-mb-small" placeholder="Enter Transaction Id Here">
+                                   </div>
+                                    <div class="form-group">
+                                     <button type="submit" class="c-btn c-btn--fullwidth c-btn--info" >Request Buy Token </button>
+                                   </div>
+                                 </div>
+                               </form>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="c-modal modal fade" id="modal1b" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true" style="display: none;">
+                    <div class="c-modal__dialog modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="c-card u-p-medium u-mh-auto" style="max-width:500px;">
+                              <?php    
+                                  $btc = file_get_contents("https://api.coinmarketcap.com/v1/ticker/bitcoin/?convert=USD");
+                                  $price_bbt = 1;
+                                  $data = json_decode($btc, TRUE);
+                                 // print_r($price_bbt);
+                                  $btc = $data[0]['price_usd'];
+                                  //echo $btc;
+                                  $price_bbt = $price_bbt;
+                                  //echo $price_bbt;
+                                  $no_of_bbt_by_btc = ($btc/$price_bbt);
+                                  //echo $no_of_bbt_by_btc;            
+                              ?>
+                                <h3 style="font-size: 20px;">Please Enter Details for Buying Iotied Tokens</h3>
+                                <p>1 BTC = <?php echo $no_of_bbt_by_btc; ?> Iotied Token</p>
+                                <hr style="margin:20px 0px;opacity: .2">
+                                <form action="buy_handle.php" method="POST">
+                                 <div style="padding: 0px;">
+                                   <div class="form-group">
+                                     <label class="c-field__label">Enter Amount</label>
+                                     <input type="text" name="amount" id="bamty" value="000" class="c-input u-mb-small" placeholder="Enter Bitcoin Here">
+                                   </div>
+                                   <div class="form-group">
+                                     <label class="c-field__label">Total Iotied Token</label>
+                                     <input type="text" name="bbt" value="000" id="bbbt" class="c-input u-mb-small" placeholder="Enter No. of Iotied Token to Buy">
+                                   </div>
+                                   <input type="hidden" name="currency" value="Bitcoin">
+
+                                     <div class="form-group">
+                                     <label class="c-field__label">Enter Transaction Id</label>
+                                     <input type="text" name="tx_idd" id="tx_idd" value="0x<?php echo random_strings(30); ?>"  class="c-input u-mb-small" placeholder="Enter Transaction Id Here">
+                                   </div>
+                                    <div class="form-group">
+                                     <button type="submit" class="c-btn c-btn--fullwidth c-btn--info" >Request Buy Token </button>
+                                   </div>
+                                 </div>
+                               </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="c-modal modal fade" id="modal1c" tabindex="-1" role="dialog" aria-labelledby="modal1" aria-hidden="true" style="display: none;">
+                    <div class="c-modal__dialog modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="c-card u-p-medium u-mh-auto" style="max-width:500px;">
+                              <?php    
+                                  $ether = file_get_contents("https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD");
+                                  $data = json_decode($ether, TRUE);
+                                  //print_r($data);
+                                  $ether = $data[0]['price_usd'];
+                                 // print_r($ether);
+                                  $price_bbt = 1;
+                                  $no_of_bbt_by_ether = ($ether/$price_bbt);   
+
+                              ?>
+                                <h3 style="font-size: 20px;">Please Enter Details for Buying Iotied Tokens</h3>
+                                <p>1 ETH = <?php echo $no_of_bbt_by_ether; ?> Iotied Token</p>
+                                <hr style="margin:20px 0px;opacity: .2">
+                                <form action="buy_handle.php" method="POST">
+                                 <div style="padding: 0px;">
+                                   <div class="form-group">
+                                     <label class="c-field__label">Enter Amount</label>
+                                     <input type="text" name="amount" id="eamty" value="000" class="c-input u-mb-small" placeholder="Enter Etherium Here">
+                                   </div>
+                                   <div class="form-group">
+                                     <label class="c-field__label">Total Iotied Token</label>
+                                     <input type="text" name="bbt" value="000" id="ebbty" class="c-input u-mb-small" placeholder="Enter No. of Iotied Token to Buy">
+                                   </div>
+                                   <input type="hidden" name="currency" value="Etherium">
+
+                                     <div class="form-group">
+                                     <label class="c-field__label">Enter Transaction Id</label>
+                                     <input type="text" name="tx_idd" id="tx_idd" value="0x<?php echo random_strings(30); ?>"  class="c-input u-mb-small" placeholder="Enter Transaction Id Here">
+                                   </div>
+                                    <div class="form-group">
+                                     <button type="submit" class="c-btn c-btn--fullwidth c-btn--info" >Request Buy Token </button>
+                                   </div>
+                                 </div>
+                               </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
 
             <div class="col-4"> 
@@ -142,7 +262,66 @@
       </main>
     </div>
     <script src="js/neat.minc619.js?v=1.0"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // Dollar Money Starts Here 
+        $("#amty").keyup(function(){
+        var price = 1;
+        //alert(price);
+        var amt = $("#amty").val(); 
+        var bbt = amt/price;
+        $("#bbty").val(bbt.toFixed(2));
+       });
 
+       $("#bbty").keyup(function(){
+        var price = parseFloat(<?php echo $price_bbt; ?>);
+        //alert(price);
+        var bbt = $("#bbty").val(); 
+        var amt = bbt*price;
+        $("#amty").val(amt.toFixed(2));
+       });
+
+        // Bitcoin Starts Here
+        $("#bamty").keyup(function(){
+          var price = parseFloat(<?php echo $no_of_bbt_by_btc; ?>);
+          //alert(price);
+          var amt = $("#bamty").val(); 
+          var bbt = amt*price;
+          $("#bbbt").val(bbt.toFixed(2));
+         });
+
+         $("#bbbt").keyup(function(){
+          var price = parseFloat(<?php echo $no_of_bbt_by_btc; ?>);
+          //alert(price);
+          var bbt = $("#bbbt").val(); 
+          var amt = bbt/price;
+          $("#bamty").val(amt.toFixed(2));
+         });
+       //Bitcoin Ends Here
+
+
+      // Ethereum
+      // ether Starts Here
+        $("#eamty").keyup(function(){
+          var price = parseFloat(<?php echo $no_of_bbt_by_ether; ?>);
+          //alert(price);
+          var amt = $("#eamty").val(); 
+          var bbt = price*amt;
+          $("#ebbty").val(bbt.toFixed(2));
+         });
+
+         $("#ebbty").keyup(function(){
+          var price = parseFloat(<?php echo $no_of_bbt_by_ether; ?>);
+          //alert(price);
+          var bbt = $("#ebbty").val(); 
+          var amt = bbt/price;
+          $("#eamty").val(amt.toFixed(2));
+         });
+       //Ether Ends Here
+
+
+      });
+    </script>
 
 
   </body>

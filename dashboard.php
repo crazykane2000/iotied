@@ -4,6 +4,9 @@
     $pdo_auth = authenticate();
     $pdo = new PDO($dsn, $user, $pass, $opt);  
     error_reporting(E_ALL & ~E_NOTICE);
+    if ($pdo_auth['kyc_approved']=="Pending") {
+      header('Location:kyc.php?choice=error&value=Your KYC is Pending, You can Trade once KYC Is Approved');
+    }
 ?>
 <!doctype html>
 <html lang="en">

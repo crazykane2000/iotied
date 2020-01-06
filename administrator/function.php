@@ -79,6 +79,37 @@ function add_notification($notification, $for){
        return $user;
   }
 
+  function authenticate_admin(){
+    if(isset($_SESSION['administrator'], $_SESSION['loged_primitives']))
+      {
+         include 'connection.php';
+          $pdo = new PDO($dsn, $user, $pass, $opt);
+          try {
+              $stmt = $pdo->prepare('SELECT * FROM administrator_super_user WHERE email = :user');
+          } catch(PDOException $ex) {
+              echo "An Error occured!"; 
+              print_r($ex->getMessage());
+          }
+          $stmt->execute(['user' => $_SESSION['administrator']]);
+          $administrator = $stmt->fetch();
+          $row_count = $stmt->rowCount();
+          //print_r($user);
+          
+          $pass = md5($administrator['password']);
+          if($pass != $_SESSION['loged_primitives'])
+          {
+             header('Location:index.php?choice=error&value=Session Out, Please do Login Again.');
+          }
+           return $administrator;      }
+      else
+      {
+        header('Location:index.php?choice=error&value=Session Out, Please do Login Again.');
+      }
+       return $administrator;
+  }
+
+
+
   function get_assets_log(){
 
     $curl = curl_init();
@@ -584,6 +615,13 @@ function get_data_id($table){
           return $response;
         }
     }
+
+    function random_strings($length_of_string) 
+    { 
+        $str_result = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'; 
+        return substr(str_shuffle($str_result),0, $length_of_string); 
+    } 
+
 
     function check_status($status){
 
