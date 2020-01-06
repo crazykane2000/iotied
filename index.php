@@ -34,7 +34,7 @@
           <form method="POST" action="login_redirect.php">
             <div class="c-field">
               <label class="c-field__label">Login as</label>
-              <select class="c-input u-mb-small"  name="type" required>
+              <select class="c-input u-mb-small" style="-webkit-appearance:none;" name="type" required>
                 <option>Laboratory</option>
                 <option>Hospital</option>
                 <option>Pharmacy </option>

@@ -28,7 +28,7 @@
         <div class="container-fluid">
          <h4>Enter Your Query Here <a href="support.php"><button class="c-btn c-btn--small">Add Issue</button></a></h4>
          <br/>
-           <div class="c-table-responsive@wide">
+           <div class="c-table-responsive@wide" style="min-height: 70vh">
             <table class="c-table">
               <thead class="c-table__head">
                 <tr class="c-table__row">

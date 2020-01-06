@@ -14,6 +14,11 @@ function add_notification($notification, $for){
         $result = $pdo->exec("INSERT INTO `$table` ($key_list) VALUES ($value_list)");
     }
 
+    function strip_comma($data){
+      $data = str_replace(",", "", $data);
+      return $data;
+    }
+
     function see_status($data){
       if(isset($_REQUEST['choice'])){
          if($data['choice']=="success")

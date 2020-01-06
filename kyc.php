@@ -35,12 +35,38 @@
         <?php include 'header.php'; ?>
 
         <div class="container-fluid">
-          <div class="row">
+          <div class="row" style="min-height: 75vh">
+             <div class="col-4">
+              <div class="card-box items" style="height: 479px;color: #333;font-size: 14px;">
+                <div style="padding: 10px;"></div>
+                 <div class="century" style="font-size: 20px;color: #117ddf"> KYC Documents Rules</div>
+                    <div class="century" style="font-size: 15px;color: #848d98">Know Your Customer - KYC enables Iotied to know/ understand their customers and their financial dealings, to be able to serve them better and manage its risks prudently.</div>
+
+                    <hr style="margin:10px 0px;opacity: .4">
+                    <h3 style="color: #117ddf;font-size:20px;">Purpose : </h3>
+                    <ul style="color: #848d98;text-align:left;font-sixe:10px;">
+                      <li>Verify the legal status of the legal person/ entity</li>
+                      <li>Verify identity of the authorized signatories and</li>
+                      <li>Verify identity of the Beneficial owners/ controllers of the account</li>
+                    </ul>
+                    <br/>
+                    <h3 style="color: #117ddf;font-size:20px;">What can be used</h3>
+                    <ul style="color: #333;text-align:left;">
+                      <li>Passport</li>
+                      <li>Voter's Identity Card</li>
+                      <li>Driving Licence</li>
+                      <li>Citizen Card</li>
+                      <li>Account Number Card</li>
+
+                    </ul>
+                    <div style="padding:20px"></div>
+              </div>
+             </div>
             <div class="col-4">
               <div class="card-box items" style="height: 479px;">
                       <div style="padding:10px"></div>               
                         <div class="century" style="font-size: 20px;color: #333"> Upload your KYC Documents</div>
-                        <div class="century" style="font-size: 13px;color: #222">You Must Upload a Government Authorised   <b style="color: red">Document</b> For Trading in Brazil Pay </div>
+                        <div class="century" style="font-size: 13px;color: #222">You Must Upload a Government Authorised   <b style="color: red">Document</b> For Trading in Iotied </div>
                         <div style="padding:20px"></div>
                        <center>
                          <form method="POST" action="kyc_handle.php" enctype="multipart/form-data">
@@ -88,42 +114,36 @@
                        </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                              <td class="c-table__row">1</td>
-                              <td class="c-table__row"><a target="_blank" href="kyc_documents/1525407784Sompoths Passport.jpg" style="color:#555;text-decoration:underline">Document1</a></td>
-                              <td class="c-table__row"><label class="label label-default">Approved</label></td>                              
-                            </tr>                    
+                      <?php 
+                            try {
+                                  $stmt = $pdo->prepare('SELECT * FROM `kyc` WHERE `user_id`="'.$pdo_auth['id'].'"  ORDER BY date DESC');
+                              } catch(PDOException $ex) {
+                                  echo "An Error occured!"; 
+                                  print_r($ex->getMessage());
+                              }
+                              $stmt->execute();
+                              $user = $stmt->fetchAll();   
+                              $i=1; 
+                              foreach($user as $key=>$value){
+                                  $statys = '<label class="label label-info">Pending</label>';
+                                  if($value['status']!="Pending"){
+                                  $statys = '<label class="label label-default">Approved</label>';
+                                }
+
+                                echo '<tr>
+                                    <td>'.$i.'</td>
+                                    <td><a target="_blank" href="kyc_documents/'.$value['file'].'" style="color:#555;text-decoration:underline">Document'.$i.'</a></td>
+                                    <td>'.$statys.'</td>                              
+                                  </tr>';
+                                  $i++;
+                            }           
+                          ?>                           
                   </tbody>
                 </table>
               </div>
             </div>
 
-             <div class="col-4">
-              <div class="card-box items" style="height: 479px;color: #333;font-size: 14px;">
-                <div style="padding: 10px;"></div>
-                 <div class="century" style="font-size: 20px;color: #55b3dd"> KYC Documents Rules</div>
-                    <div class="century" style="font-size: 15px;color: #848d98">Know Your Customer - KYC enables Brazil Pay to know/ understand their customers and their financial dealings, to be able to serve them better and manage its risks prudently.</div>
-
-                    <hr style="margin:10px 0px;opacity: .4">
-                    <h3 style="color: #55b3dd;font-size:20px;">Purpose : </h3>
-                    <ul style="color: #848d98;text-align:left;font-sixe:10px;">
-                      <li>Verify the legal status of the legal person/ entity</li>
-                      <li>Verify identity of the authorized signatories and</li>
-                      <li>Verify identity of the Beneficial owners/ controllers of the account</li>
-                    </ul>
-                    <br/>
-                    <h3 style="color: #55b3dd;font-size:20px;">What can be used</h3>
-                    <ul style="color: #333;text-align:left;">
-                      <li>Passport</li>
-                      <li>Voter's Identity Card</li>
-                      <li>Driving Licence</li>
-                      <li>Citizen Card</li>
-                      <li>Account Number Card</li>
-
-                    </ul>
-                    <div style="padding:20px"></div>
-              </div>
-             </div>
+            
           </div>
          <?php include 'footer.php'; ?>
         </div>

@@ -30,7 +30,7 @@
 
           <div style="padding: 20px;"></div>
 
-          <div class="row">
+          <div class="row" style="min-height: 75vh">
             <div class="col-12">
               <div class="c-table-responsive@wide">
                  <div style="padding: 30px;background-color: #fff;">

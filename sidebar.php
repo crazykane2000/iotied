@@ -14,7 +14,7 @@
               </li>    
 
               <li>
-                <a class="c-sidebar__link" href="dashboard.php">
+                <a class="c-sidebar__link" href="plans.php">
                   <i class="c-sidebar__icon feather icon-home"></i>Plans 
                 </a>
               </li> 
@@ -23,7 +23,13 @@
                 <a class="c-sidebar__link" href="kyc.php">
                   <i class="c-sidebar__icon feather icon-home"></i>KYC
                 </a>
-              </li>    
+              </li> 
+
+             <!--  <li>
+                <a class="c-sidebar__link" href="buy.php">
+                  <i class="c-sidebar__icon feather icon-home"></i>Buy Tokens
+                </a>
+              </li>     -->
   
 
                <li>
@@ -37,12 +43,12 @@
                   <i class="c-sidebar__icon feather icon-home"></i>Support
                 </a>
               </li>  
-
+<!-- 
                <li>
                 <a class="c-sidebar__link" href="dashboard.php">
                   <i class="c-sidebar__icon feather icon-home"></i>Smart Contracts
                 </a>
-              </li>    
+              </li>    --> 
 
             </ul>
 

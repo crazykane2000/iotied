@@ -61,7 +61,7 @@
               } 
               //print_r($response);
               ?>
-          <div class="row">
+          <div class="row" style="min-height: 75vh">
             <div class="col-12">
               <div class="c-table-responsive@wide">
                 <table class="c-table">
