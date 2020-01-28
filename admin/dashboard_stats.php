@@ -21,11 +21,19 @@
               <a href="view_producers.php">
                 <div class="c-state-card c-state-card--info">
                 <h4 class="c-state-card__title">Total Producers</h4>
-                <span class="c-state-card__number"><?php $balance =  get_patients(); 
-                      $balance = json_decode($balance,true);
-                      $balance = count($balance);
-                      echo $balance;
-                ?></span>
+                <span class="c-state-card__number"> <?php $balance =  get_patients(); 
+              $b = 0;
+              $balance = json_decode($balance,true);
+              foreach ($balance as $key => $value) {
+                //print_r($value);  
+                if ($value['actionPerformed']=="PATIENT UPDATED") {
+                  continue;
+                } else{$b++;}
+              }
+              // 
+              // $balance = count($balance);
+              echo $b;
+        ?></span>
               </div>
               </a>
             </div>
@@ -61,7 +69,7 @@
               <a href="buy_requests.php">
                 <div class="c-state-card c-state-card--info">
                   <h4 class="c-state-card__title">Tokens Bought</h4>
-                  <span class="c-state-card__number">$45,000</span>
+                  <span class="c-state-card__number"><?php  $count = sum_col_table("buy_token","no_of_tokens"); echo number_format($count['SUM(`no_of_tokens`)'], 2); ?></span>
                 </div>
               </a>
             </div>

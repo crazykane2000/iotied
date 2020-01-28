@@ -33,7 +33,7 @@
           <div class="row" style="min-height: 75vh">
             <div class="col-12">
               <div class="c-table-responsive@wide">
-                 <div style="padding: 30px;background-color: #fff;">
+                 <div style="padding: 30px;background-color: #fff;min-height: 700px">
                   <h3>Enter Your Query Here <a href="view_support.php"><button class="c-btn c-btn--small">View All Request</button></a></h3>
                   <div style="padding: 20px;"></div>
                    <form action="support_handle.php" method="POST" enctype="">

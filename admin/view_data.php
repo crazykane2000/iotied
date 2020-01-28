@@ -70,7 +70,7 @@
               <div class="c-table-responsive@wide" style="background-color: #fff;padding: 30px;border-radius: 4px;">
                 <table class="c-table">
                   <?php foreach ($response as $key => $value) {     
-                  if ($value['address']!=$_REQUEST['address']) { continue;  }  
+                  if ($value['patientAddress']!=$_REQUEST['address']) { continue;  }  
                                    
                           foreach ($value as $key_data => $value_data) {
                             if (is_array($value_data)) {

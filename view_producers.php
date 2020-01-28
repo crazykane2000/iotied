@@ -10,13 +10,15 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Dashboard  | Iotied</title>
+    <title>View All Producers Data  | Iotied</title>
     <meta name="description" content="Iotied">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/neat.minc619.css?v=1.0">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" />
   </head>
   <body>
 
@@ -27,12 +29,8 @@
         <?php include 'header.php'; ?>
 
         <div class="container-fluid">
-          
-          
-
+         
           <?php $curl = curl_init();
-
-          //echo $pdo_auth['tx_address'];
               curl_setopt_array($curl, array(
                 CURLOPT_PORT => "3005",
                 CURLOPT_URL => "http://13.233.7.230:3005/api/dataManager/get/patients",
@@ -61,16 +59,18 @@
               } 
               //print_r($response);
               ?>
-          <div class="row" style="min-height: 75vh">
+          <div class="row">
             <div class="col-12">
+              <h4>View All Producers </h4>
+              <div style="padding: 10px;"></div>
               <div class="c-table-responsive@wide">
-                <table class="c-table">
+               <div style="padding:10px;background-color: #fff;min-height: 700px">
+                  <table class="c-table" id="example">
                   <thead class="c-table__head">
                     <tr class="c-table__row">
-                      <th class="c-table__cell c-table__cell--head">Producers</th>
+                      <th class="c-table__cell c-table__cell--head">Customer</th>
                       <th class="c-table__cell c-table__cell--head">Block No.</th>
-                      <th class="c-table__cell c-table__cell--head">Patient Id</th>
-                      <th class="c-table__cell c-table__cell--head">Country</th>
+                      <th class="c-table__cell c-table__cell--head">ICD Code</th>
                       <th class="c-table__cell c-table__cell--head">Disease Tags</th>
                       <th class="c-table__cell c-table__cell--head">Status</th>
                       <th class="c-table__cell c-table__cell--head">Actions</th>
@@ -89,6 +89,36 @@
 
 
                       foreach ($response as $key => $value) {
+                       
+                         $btns = '<a class="c-dropdown__item batay dropdown-item" data-toggle="modal" data-id="'.$value['patientAddress'].'" data-target="#modal9909">Request Access</a>';
+                        $white = '<label class="c-badge c-badge--danger c-badge--small" style="">Not Contacted</label>';
+                        
+                        $count = get_count_items_andd("request_access", "vendor_tx", $pdo_auth['tx_address'], "patient_tx", $value['patientAddress']);
+                       // echo $count;
+
+                        $rata = get_data_items_andd("request_access", "vendor_tx", $pdo_auth['tx_address'], "patient_tx", $value['patientAddress']);
+
+                       // print_r($rata);
+                        
+                        if ($count>0) {
+                          $btns = '<a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['patientAddress'].'">Show Details</a>';
+                          $white = '<label class="c-badge c-badge--success c-badge--small" style="">Whitelisted</label>';
+                        }elseif ($rata['status']=="Pending") {
+                          $btns = '<a class="c-dropdown__item dropdown-item" >Pending Approval</a>';
+                          $white = '<label class="c-badge c-badge--warning c-badge--small" style="">Pending</label>';
+                        }
+
+                        
+                        $disease_tags = $value['patientData']['Disease Tags'];
+                        $disease_tags_upper = strtoupper($disease_tags);
+                        $sed = strtoupper(trim($_REQUEST['search_term']));
+
+                        // if ($value['patientData']['ICD Codes']==$_REQUEST['search_term'] || strpos($disease_tags_upper,$sed ) !== false) {
+                        //   //echo "Kno"; Do Nothing Bhaiya 
+                        // }
+                        // else{continue;}
+
+
 
                         $tt = '';
                         if (!in_array(getIfSet($value['patientData']['Disease Tags']), $value)) {
@@ -100,13 +130,13 @@
                         }   
                         else{
                           $tt = '';
-                        }    
+                        }     
 
-                        if ($value['patientData']['ICD Codes']=="") {
+                        if ($value['actionPerformed']=="PATIENT UPDATED") {
                                   continue;
-                                }        
+                                }           
 
-                        echo '<tr class="c-table__row">
+                         echo '<tr class="c-table__row">
                                 <td class="c-table__cell">
                                   <div class="o-media">
                                     <div class="o-media__img u-mr-xsmall">
@@ -115,18 +145,18 @@
                                       </div>
                                     </div>
                                     <div class="o-media__body">
-                                      <h6 style="font-size:12px;cursor:pointer;font-weight:bold" data-toggle="modal" data-target="#modal1" >'.substr($value['patientAddress'], 0,16).'...</h6>
+                                      <h6 style="font-size:12px;cursor:pointer;font-weight:bold" data-toggle="modal" data-target="#modal1" >'.substr($value['patientAddress'], 0,39).'</h6>
                                       <p>'.$value['patientData']['City'].", ".$value['patientData']['State'].", ".$value['patientData']['County'].'</p>
                                     </div>
                                   </div>
                                 </td>
                                 <td class="c-table__cell">'.$value['blockNumber'].'</td>
-                                <th class="c-table__cell" title="'.$value['patientAddress'].'">'.substr($value['patientAddress'], 0,10).'...</th>
-                                <td class="c-table__cell">'.ucfirst($value['patientData']['County']).'</td>
-                                <td class="c-table__cell">
-                                  '.$tt."<span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>".$value['patientData']['ICD Codes']."</span>".'
+                                <td class="c-table__cell">'."<span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>".$value['patientData']['ICD Codes']."</span>".'</td>
+                                
+                               <td class="c-table__cell">
+                                  '.$tt.'
                                 </td>
-                                <td><label class="c-badge c-badge--success c-badge--small" style="">Whitelisted</label></td>
+                                <td>'.$white.'</td>
                                 <td class="c-table__cell">
                                   <div class="c-dropdown dropdown">
                                     <a href="#" class="c-btn c-btn--info has-icon dropdown-toggle" id="dropdownMenuTable1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -134,7 +164,7 @@
                                     </a>
 
                                     <div class="c-dropdown__menu dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuTable1">
-                                      <a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['address'].'">Show Details</a>
+                                      '.$btns.'
                                     </div>
                                   </div>
                                 </td>
@@ -142,98 +172,82 @@
                       }
                      ?>
 
-                     <tr class="c-table__row">
-                                <td class="c-table__cell">
-                                  <div class="o-media">
-                                    <div class="o-media__img u-mr-xsmall">
-                                      <div class="c-avatar c-avatar--small">
-                                        <img class="c-avatar__img" src="img/download.jpg" alt="">
-                                      </div>
-                                    </div>
-                                    <div class="o-media__body">
-                                      <h6 style="font-size:12px;cursor:pointer;font-weight:bold" data-toggle="modal" data-target="#modal1" >DepEyEGkiOQAOXp...</h6>
-                                      <p>Raipur, Chhattisgarh</p>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td class="c-table__cell">785</td>
-                                <th class="c-table__cell" title="">0x8db058e3......</th>
-                                <td class="c-table__cell">India</td>
-                                <td class="c-table__cell">
-                                  <span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>cholera</span>
-                                  <span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>Poik</span>
-                                </td>
-                                <td><label class="c-badge c-badge--danger c-badge--small" style="">Not Contacted</label></td>
-                                <td class="c-table__cell">
-                                  <div class="c-dropdown dropdown">
-                                    <a href="#" class="c-btn c-btn--info has-icon dropdown-toggle" id="dropdownMenuTable1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      More <i class="feather icon-chevron-down"></i>
-                                    </a>
-
-                                    <div class="c-dropdown__menu dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuTable1">
-                                      <a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['address'].'">Request Access</a>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
 
                    
                   </tbody>
                 </table>
+               </div>
               </div>
             </div>
-          </div>
-         <?php include 'footer.php'; ?>
+          </div>          
+          <?php include 'footer.php';  ?>
         </div>
       </main>
     </div>
     <script src="js/neat.minc619.js?v=1.0"></script>
-    
+    <script type="text/javascript">
+      $(document).ready(function () {
+          $(".batay").click(function () {
+              $("#patient-id").val($(this).data('id'));
+              $('.tyui').modal('show');
+          });
+      });
+    </script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $('#example').DataTable( {
+              dom: 'Bfrtip',
+              buttons: [
+                  'copy', 'csv', 'excel', 'pdf', 'print',
+              ]
+          } );
+      } );
+    </script>
 
-    <div class="c-modal modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1">
-        <div class="c-modal__dialog modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="c-card u-p-medium u-mh-auto" style="max-width:500px;">
-                    <h3>Whitelisted User Information</h3>
-                    <hr/>
-                    <div style="padding: 10px;"></div>
-                    <table class="c-table" style="font-size: 12px;">
-                      <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;">Address</td>
-                        <td style="padding:10px;">0x8db058e36f1672a4cf965be8f349a032c5868c58</td>
-                      </tr>
+    <div class="c-modal tyui modal fade" id="modal9909" tabindex="-1" role="dialog" aria-labelledby="modal1">
+            <div class="c-modal__dialog modal-dialog modal-lg" role="document">
+                <form action="request_access_directs.php" method="POST">
+                  <div class="modal-content">
+                    <div class="c-card u-p-medium u-mh-auto" style="max-width:500px;">
+                        <h3>Request for User Information</h3>
+                        <hr style="margin:14px 0px;opacity: .3">
+                        <label class="c-label">Select Plan</label>
+                        <select class="c-input" name="plan" style="height:30px;background:#ffffff;">
+                          <?php 
+                              $dara = fetch_all_popo_without_date("plan");
+                              //print_r($dara);
+                              foreach ($dara as $key => $value) {
+                                echo '<option>'.$value['disease']." -- ".$value['reward'].'</option>';
+                              }
+                           ?>
+                        </select><br/>
 
-                      <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;">Patient Id </td>
-                        <td style="padding:10px;">0x99058e36f1672a4cf965be8f349a032c5868889</td>
-                      </tr>
+                        <label class="c-label">Enter Duration (in Days)</label>
+                        <input type="number" min="1" value="20" class="c-input" placeholder="Enter Duration in Days" name="duration">
+                        <br/>
 
-                      <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;">DNA </td>
-                        <td style="padding:10px;">depEyEGkiOQAOXpk4W4gaIh9MqcBeafFT</td>
-                      </tr>
+                        <input type="hidden" name="patient_tx" id="patient-id">
+                        <a href="terms.php" target="_blank">Terms and Conditions</a>
 
-                      <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;">Biometric Id </td>
-                        <td style="padding:10px;">X2tDZmETJIYtq14YtjZLBEfFYCOKGY</td>
-                      </tr>
-
-                       <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;"><img src="12.png"> </td>
-                      </tr>
-
-
-                    </table>
-                    <div style="padding: 10px;"></div>
-                    <button class="c-btn c-btn--danger" data-dismiss="modal">
-                        Close Now
-                    </button>
+                        <div style="padding: 10px;"></div>
+                        <button class="c-btn c-btn--info"  type="submit">
+                            Request For Access
+                        </button>
+                    </div>
                 </div>
+                </form>
             </div>
         </div>
-    </div>
-
-
+    
   </body>
 
 </html>

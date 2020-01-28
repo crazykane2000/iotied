@@ -37,7 +37,7 @@
         <div class="container-fluid">
           <div class="row" style="min-height: 75vh">
              <div class="col-4">
-              <div class="card-box items" style="height: 479px;color: #333;font-size: 14px;">
+              <div class="card-box items" style="height: 779px;color: #333;font-size: 14px;">
                 <div style="padding: 10px;"></div>
                  <div class="century" style="font-size: 20px;color: #117ddf"> KYC Documents Rules</div>
                     <div class="century" style="font-size: 15px;color: #848d98">Know Your Customer - KYC enables Iotied to know/ understand their customers and their financial dealings, to be able to serve them better and manage its risks prudently.</div>
@@ -63,7 +63,7 @@
               </div>
              </div>
             <div class="col-4">
-              <div class="card-box items" style="height: 479px;">
+              <div class="card-box items" style="height: 779px;">
                       <div style="padding:10px"></div>               
                         <div class="century" style="font-size: 20px;color: #333"> Upload your KYC Documents</div>
                         <div class="century" style="font-size: 13px;color: #222">You Must Upload a Government Authorised   <b style="color: red">Document</b> For Trading in Iotied </div>
@@ -102,7 +102,7 @@
             </div>
 
             <div class="col-4">
-              <div class="card-box items" style="height: 479px;">
+              <div class="card-box items" style="height: 779px;">
                 <div style="padding: 10px;"></div>
                  <h3 style="color: #333;text-align:left;font-size: 20px">KYC Documents </h3>
                    <table style="color: #333;" class="c-table">

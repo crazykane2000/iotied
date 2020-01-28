@@ -347,6 +347,71 @@ function add_notification($notification, $for){
       return $user;
     }
 
+    function get_count_items_andd($table, $col, $value, $col2,$value2){
+       include 'connection.php';
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+        $opt = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        $pdo = new PDO($dsn, $user, $pass, $opt);        
+                         
+      try {
+          $stmt = $pdo->prepare('SELECT * FROM `'.$table.'` WHERE `'.$col.'`="'.$value.'" AND  `'.$col2.'`="'.$value2.'" AND `status`="Approved" ORDER BY date DESC ');
+      } catch(PDOException $ex) {
+          echo "An Error occured!"; 
+          print_r($ex->getMessage());
+      }
+      $stmt->execute();
+      $user = $stmt->rowCount();
+      return $user;
+    }
+
+
+    function get_data_items_andd($table, $col, $value, $col2,$value2){
+       include 'connection.php';
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+        $opt = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        $pdo = new PDO($dsn, $user, $pass, $opt);        
+                         
+      try {
+          $stmt = $pdo->prepare('SELECT * FROM `'.$table.'` WHERE `'.$col.'`="'.$value.'" AND  `'.$col2.'`="'.$value2.'" ORDER BY date DESC ');
+      } catch(PDOException $ex) {
+          echo "An Error occured!"; 
+          print_r($ex->getMessage());
+      }
+      $stmt->execute();
+      $user = $stmt->fetch();
+      return $user;
+    }
+
+    function count_whitelisted($table, $col, $value){
+       include 'connection.php';
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+        $opt = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        $pdo = new PDO($dsn, $user, $pass, $opt);        
+                         
+      try {
+        //echo 'SELECT * FROM `'.$table.'` WHERE `'.$col.'`="'.$value.'" AND `status`="Approved"  ORDER BY date DESC ';
+          $stmt = $pdo->prepare('SELECT * FROM `'.$table.'` WHERE `'.$col.'`="'.$value.'" AND `status`="Approved"  ORDER BY date DESC ');
+      } catch(PDOException $ex) {
+          echo "An Error occured!"; 
+          print_r($ex->getMessage());
+      }
+      $stmt->execute();
+      $user = $stmt->rowCount();
+      return $user;
+    }
+
 function get_data_id($table){
         include 'connection.php';
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -383,6 +448,23 @@ function get_data_id($table){
             $user = $stmt->fetchAll();
             return $user;
     }
+
+    function fetch_all_popo_without_date($table){
+         include 'connection.php';
+        // echo 'SELECT * FROM `'.$table.'` WHERE `'.$column.'`='.$id.' ORDER BY date DESC';
+         $pdo = new PDO($dsn, $user, $pass, $opt);
+         try {
+            $stmt = $pdo->prepare('SELECT * FROM `'.$table.'`');
+
+            } catch(PDOException $ex) {
+                echo "An Error occured!"; 
+                print_r($ex->getMessage());
+            }
+            $stmt->execute();
+            $user = $stmt->fetchAll();
+            return $user;
+    }
+
 
 
     function fetch_menus_with_id($table){
@@ -779,5 +861,51 @@ function get_data_id($table){
             
     }
 
+    function whitelist_vendor($patient_address, $vendor_address){
+      $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_PORT => "3005",
+          CURLOPT_URL => "http://13.233.7.230:3005/api/dataManager/whitelist/address",
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => "{\n  \"_patientAddress\": \"$patient_address\", \n  \"_addressToWhitelist\": \"$vendor_address\"\n}",
+          CURLOPT_HTTPHEADER => array(
+            "Content-Type: application/json",
+            "Postman-Token: a96a78ed-1c18-47c4-bab4-112c54269d8e",
+            "cache-control: no-cache"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+          return "cURL Error #:" . $err;
+        } else {
+          return $response;
+        }
+    }
+
+     function sum_col_table($table,  $col){
+     include 'connection.php';
+        $pdo = new PDO($dsn, $user, $pass, $opt);
+        try {
+           $stmt = $pdo->prepare('SELECT SUM(`no_of_tokens`) FROM `buy_token`');
+           //echo 'SELECT SUM(`no_of_tokens`) AS sums FROM `buy_token`';
+           } catch(PDOException $ex) {
+               echo "An Error occured!";
+               print_r($ex->getMessage());
+           }
+           $stmt->execute();
+           $user = $stmt->fetch();
+           return $user;            
+   }
 
  ?>

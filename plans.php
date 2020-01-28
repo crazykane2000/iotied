@@ -2,7 +2,11 @@
     include 'administrator/connection.php';
     include 'administrator/function.php';
     $pdo_auth = authenticate();
-    $pdo = new PDO($dsn, $user, $pass, $opt);  
+    $pdo = new PDO($dsn, $user, $pass, $opt); 
+    if ($pdo_auth['kyc_approved']=="Pending") {
+      header('Location:kyc.php?choice=error&value=Please Fill the KYC Details, Once Approved You will be able to access the system.');
+      exit();
+    } 
 ?>
 <!doctype html>
 <html lang="en">
@@ -30,8 +34,8 @@
 
           <div class="row" style="min-height: 700px">
             <div class="col-4 ">
-              <div class="c-table-responsive@wide">
-                 <div style="padding: 30px;background-color: #fff;">
+              <div class="c-table-responsive@wide" style="">
+                 <div style="padding: 30px;background-color: #fff;min-height: 700px">
                   <h3>Create Plan Here</h3>
                   <div style="padding: 10px;"></div>
                   <hr style="opacity: .2" />
@@ -69,7 +73,7 @@
 
             <div class="col-8 ">
               <div class="c-table-responsive@wide">
-                 <div style="padding: 30px;background-color: #fff;">
+                 <div style="padding: 30px;background-color: #fff;min-height: 700px">
                   <h3>View Plan Here</h3>
                   <div style="padding: 10px;"></div>
                   <hr style="opacity: .2" />

@@ -1,7 +1,7 @@
 <?php session_start();
-    include '../administrator/connection.php';
-    include '../administrator/function.php';
-    $pdo_auth = authenticate_admin();
+    include 'administrator/connection.php';
+    include 'administrator/function.php';
+    $pdo_auth = authenticate();
     $pdo = new PDO($dsn, $user, $pass, $opt);  
 ?>
 <!doctype html>
@@ -15,20 +15,20 @@
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="../css/neat.minc619.css?v=1.0">
+    <link rel="stylesheet" href="css/neat.minc619.css?v=1.0">
   </head>
   <body>
 
     <div class="o-page">
-      <?php include 'sidebar_admin.php'; ?>
+      <?php include 'sidebar.php'; ?>
 
       <main class="o-page__content">
-        <?php include 'header_admin.php'; ?>
+        <?php include 'header.php'; ?>
 
         <div class="container-fluid" >
          
 
-          <div class="row" style="">
+          <div class="row" style="min-height: 700px">
             
 
             <div class="col-12 ">
@@ -59,6 +59,10 @@
                     if ($value['status']!="Pending") {
                       $status = '<span class="c-badge c-badge--success c-badge--small " >Approved</span>';
                     }
+
+                    if ($value['tx_address']!=$pdo_auth['tx_address']) {
+                      continue;
+                    }
                       echo '<tr class="c-table__row">
                             <td class="c-table__cell">'.$i.'</td>
                             <td class="c-table__cell"><b style="color:#333;font-size:16px;">'.$value['user_name'].'</b><br/>Tx : '.$value['tx_address'].'</td>
@@ -78,11 +82,11 @@
             </div>
           </div>
           
-          <?php include '../footer.php'; ?>
+          <?php include 'footer.php'; ?>
         </div>
       </main>
     </div>
-    <script src="j../s/neat.minc619.js?v=1.0"></script>
+    <script src="js/neat.minc619.js?v=1.0"></script>
 
 
 

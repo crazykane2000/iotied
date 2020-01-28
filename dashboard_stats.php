@@ -4,9 +4,17 @@
       <h4 class="c-state-card__title">Registered Producers</h4>
       <a href="view_producers.php"><span class="c-state-card__number">
         <?php $balance =  get_patients(); 
+              $b = 0;
               $balance = json_decode($balance,true);
-              $balance = count($balance);
-              echo $balance;
+              foreach ($balance as $key => $value) {
+                //print_r($value);  
+                if ($value['actionPerformed']=="PATIENT UPDATED") {
+                  continue;
+                } else{$b++;}
+              }
+              // 
+              // $balance = count($balance);
+              echo $b;
         ?></span></a>
     </div>
   </div>
@@ -14,7 +22,9 @@
   <div class="col-md-3">
     <div class="c-state-card c-state-card--success">
       <a href="white_listed_producers.php"><h4 class="c-state-card__title">Whitelisted Producers</h4>
-      <span class="c-state-card__number">2</span>     </a>           
+      <span class="c-state-card__number"><?php $balance =  count_whitelisted("request_access","vendor_tx", $pdo_auth['tx_address']); 
+                        echo $balance;
+                  ?></span>     </a>           
     </div>
   </div>
 

@@ -65,12 +65,11 @@
                 <table class="c-table">
                   <thead class="c-table__head">
                     <tr class="c-table__row">
-                      <th class="c-table__cell c-table__cell--head">Select</th>
                       <th class="c-table__cell c-table__cell--head">Customer</th>
-                      <th class="c-table__cell c-table__cell--head">Country</th>
+                      <th class="c-table__cell c-table__cell--head">Block No.</th>
                       <th class="c-table__cell c-table__cell--head">ICD Code</th>
-                      <th class="c-table__cell c-table__cell--head">DOB</th>
                       <th class="c-table__cell c-table__cell--head">Disease Tags</th>
+                      <th class="c-table__cell c-table__cell--head">Status</th>
                       <th class="c-table__cell c-table__cell--head">Actions</th>
                     </tr>
                   </thead>
@@ -87,26 +86,36 @@
 
 
                       foreach ($response as $key => $value) {
+                       
+                         $btns = '<a class="c-dropdown__item batay dropdown-item" data-toggle="modal" data-id="'.$value['patientAddress'].'" data-target="#modal9909">Request Access</a>';
+                        $white = '<label class="c-badge c-badge--danger c-badge--small" style="">Not Contacted</label>';
+                        
+                        $count = get_count_items_andd("request_access", "vendor_tx", $pdo_auth['tx_address'], "patient_tx", $value['patientAddress']);
+                       // echo $count;
+
+                        $rata = get_data_items_andd("request_access", "vendor_tx", $pdo_auth['tx_address'], "patient_tx", $value['patientAddress']);
+
+                       // print_r($rata);
+                        
+                        if ($count>0) {
+                          $btns = '<a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['patientAddress'].'">Show Details</a>';
+                          $white = '<label class="c-badge c-badge--success c-badge--small" style="">Whitelisted</label>';
+                        }elseif ($rata['status']=="Pending") {
+                          $btns = '<a class="c-dropdown__item dropdown-item" >Pending Approval</a>';
+                          $white = '<label class="c-badge c-badge--warning c-badge--small" style="">Pending</label>';
+                        }
+
                         
                         $disease_tags = $value['patientData']['Disease Tags'];
-                        //echo "<br/>".$disease_tags;
-                        //$disease_tags = explode(",",  $disease_tags);
-                        //print_r($disease_tags);
-                       
+                        $disease_tags_upper = strtoupper($disease_tags);
+                        $sed = strtoupper(trim($_REQUEST['search_term']));
 
-                        if ($value['patientData']['ICD Codes']==$_REQUEST['search_term'] || strpos($disease_tags, trim($_REQUEST['search_term'])) !== false) {
+                        if ($value['patientData']['ICD Codes']==$_REQUEST['search_term'] || strpos($disease_tags_upper,$sed ) !== false) {
                           //echo "Kno"; Do Nothing Bhaiya 
                         }
                         else{continue;}
 
 
-                        // if(){
-                        //     echo "Word Found!";
-                        // } else{
-                        //     echo "Word Not Found!";
-                        // }
-
-                        //print_r($_REQUEST['search_term']);
 
                         $tt = '';
                         if (!in_array(getIfSet($value['patientData']['Disease Tags']), $value)) {
@@ -118,7 +127,11 @@
                         }   
                         else{
                           $tt = '';
-                        }            
+                        }     
+
+                        if ($value['actionPerformed']=="PATIENT UPDATED") {
+                                  continue;
+                                }           
 
                          echo '<tr class="c-table__row">
                                 <td class="c-table__cell">
@@ -129,18 +142,18 @@
                                       </div>
                                     </div>
                                     <div class="o-media__body">
-                                      <h6 style="font-size:12px;cursor:pointer;font-weight:bold" data-toggle="modal" data-target="#modal1" >'.substr($value['patientAddress'], 0,16).'...</h6>
+                                      <h6 style="font-size:12px;cursor:pointer;font-weight:bold" data-toggle="modal" data-target="#modal1" >'.substr($value['patientAddress'], 0,39).'</h6>
                                       <p>'.$value['patientData']['City'].", ".$value['patientData']['State'].", ".$value['patientData']['County'].'</p>
                                     </div>
                                   </div>
                                 </td>
                                 <td class="c-table__cell">'.$value['blockNumber'].'</td>
-                                <th class="c-table__cell" title="'.$value['patientAddress'].'">'.substr($value['patientAddress'], 0,10).'...</th>
-                                <td class="c-table__cell">'.ucfirst($value['patientData']['County']).'</td>
-                                <td class="c-table__cell">
-                                  '.$tt."<span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>".$value['patientData']['ICD Codes']."</span>".'
+                                <td class="c-table__cell">'."<span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>".$value['patientData']['ICD Codes']."</span>".'</td>
+                                
+                               <td class="c-table__cell">
+                                  '.$tt.'
                                 </td>
-                                <td><label class="c-badge c-badge--success c-badge--small" style="">Whitelisted</label></td>
+                                <td>'.$white.'</td>
                                 <td class="c-table__cell">
                                   <div class="c-dropdown dropdown">
                                     <a href="#" class="c-btn c-btn--info has-icon dropdown-toggle" id="dropdownMenuTable1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -148,8 +161,7 @@
                                     </a>
 
                                     <div class="c-dropdown__menu dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuTable1">
-                                      <a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['address'].'">Show Details</a>
-                                      <a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['address'].'">Request Access</a>
+                                      '.$btns.'
                                     </div>
                                   </div>
                                 </td>
@@ -164,11 +176,53 @@
             </div>
           </div>          
           <?php include 'footer.php';  ?>
+
+          <div class="c-modal tyui modal fade" id="modal9909" tabindex="-1" role="dialog" aria-labelledby="modal1">
+            <div class="c-modal__dialog modal-dialog modal-lg" role="document">
+                <form action="request_access_directs.php" method="POST">
+                  <div class="modal-content">
+                    <div class="c-card u-p-medium u-mh-auto" style="max-width:500px;">
+                        <h3>Request for User Information</h3>
+                        <hr style="margin:14px 0px;opacity: .3">
+                        <label class="c-label">Select Plan</label>
+                        <select class="c-input" name="plan" style="height:30px;background:#ffffff;">
+                          <?php 
+                              $dara = fetch_all_popo_without_date("plan");
+                              //print_r($dara);
+                              foreach ($dara as $key => $value) {
+                                echo '<option>'.$value['disease']." -- ".$value['reward'].'</option>';
+                              }
+                           ?>
+                        </select><br/>
+
+                        <label class="c-label">Enter Duration (in Days)</label>
+                        <input type="number" min="1" value="20" class="c-input" placeholder="Enter Duration in Days" name="duration">
+                        <br/>
+
+                        <input type="hidden" name="patient_tx" id="patient-id">
+                        <a href="terms.php" target="_blank">Terms and Conditions</a>
+
+                        <div style="padding: 10px;"></div>
+                        <button class="c-btn c-btn--info"  type="submit">
+                            Request For Access
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
         </div>
       </main>
     </div>
     <script src="js/neat.minc619.js?v=1.0"></script>
-    
+    <script type="text/javascript">
+      $(document).ready(function () {
+          $(".batay").click(function () {
+              $("#patient-id").val($(this).data('id'));
+              $('.tyui').modal('show');
+          });
+      });
+    </script>
   </body>
 
 </html>

@@ -5,53 +5,7 @@
 
           <h2 class="c-navbar__title">Admin Dashboard</h2>
 
-          <div class="c-dropdown dropdown u-mr-small">
-            <div class="c-notification dropdown-toggle" id="dropdownMenuToggle1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">
-              <i class="c-notification__icon feather icon-message-circle"></i>
-            </div>
-
-            <div class="c-dropdown__menu c-dropdown__menu--large has-arrow dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuToggle1">
-
-              <span class="c-dropdown__menu-header">
-                Mentions
-              </span>
-
-              
-              
-
-              <a class="c-dropdown__item dropdown-item" href="#">
-                <div class="o-media">
-                  <div class="o-media__img u-mr-xsmall">
-                    <span class="c-avatar c-avatar--xsmall">
-                      <img class="c-avatar__img" src="../img/download.jpg" alt="Adam Sandler">
-                    </span>
-                  </div>
-
-                  <div class="o-media__body">
-                    <p>Hey, Julia how are you doing. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat eius iste.</p>
-                  </div>
-                </div>
-              </a>
-
-              <a class="c-dropdown__item dropdown-item" href="#">
-                <div class="o-media">
-                  <div class="o-media__img u-mr-xsmall">
-                    <span class="c-avatar c-avatar--xsmall">
-                      <img class="c-avatar__img" src="../img/download.jpg" alt="Adam Sandler">
-                    </span>
-                  </div>
-
-                  <div class="o-media__body">
-                    <p>Hey, Julia how are you doing. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat eius iste.</p>
-                  </div>
-                </div>
-              </a>
-
-              <a class="c-dropdown__menu-footer">
-                All Mentions
-              </a>
-            </div>
-          </div>
+          
 
           <div class="c-dropdown dropdown u-mr-medium">
             <div class="c-notification has-indicator dropdown-toggle" id="dropdownMenuToggle2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">

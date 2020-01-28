@@ -9,7 +9,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>View Support  | Iotied</title>
+    <title>View Access requests  | Iotied</title>
     <meta name="description" content="Iotied">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
@@ -26,24 +26,23 @@
         <?php include 'header.php'; ?>
 
         <div class="container-fluid">
-         <h4>Enter Your Query Here <a href="support.php"><button class="c-btn c-btn--small">Add Issue</button></a></h4>
+         <h4>View Access requests</h4>
          <br/>
            <div class="c-table-responsive@wide" style="min-height: 70vh">
-           <div style="padding: 10px;background-color: #fff;min-height: 700px">
-              <table class="c-table">
+            <table class="c-table">
               <thead class="c-table__head">
                 <tr class="c-table__row">
                   <th class="c-table__cell c-table__cell--head">S.No</th>
-                  <th class="c-table__cell c-table__cell--head">Query</th>
+                  <th class="c-table__cell c-table__cell--head">Producer </th>
+                  <th class="c-table__cell c-table__cell--head">Consumer </th>
                   <th class="c-table__cell c-table__cell--head">Status</th>
-                  <th class="c-table__cell c-table__cell--head">Date</th>
                 </tr>
               </thead>
 
               <tbody>
                 <?php 
                   try {
-                        $stmt = $pdo->prepare('SELECT * FROM `support` WHERE `username`="'.$pdo_auth['name'].'" ORDER BY date DESC');
+                        $stmt = $pdo->prepare('SELECT * FROM `request_access` WHERE `vendor_tx`="'.$pdo_auth['tx_address'].'"');
                     } catch(PDOException $ex) {
                         echo "An Error occured!"; 
                         print_r($ex->getMessage());
@@ -53,28 +52,24 @@
                     $i=1; 
                     
                     foreach($user as $key=>$value){  
-                    $status = '<span class="c-badge c-badge--danger c-badge--small " >Pending</span>';
+                    $status = '<span class="c-badge c-badge--warning c-badge--small " >Pending</span>';
                     if ($value['status']!="Pending") {
                       $status = '<span class="c-badge c-badge--success c-badge--small " >Resolved</span>';
                     }
 
-                    $ans = "";
-                    if ($value['answer']!="") {
-                      $ans = "<b style='color:green';'>Ans : </b>".$value['answer'];
-                    }
+                    $vendor = get_data_id_data("users","tx_address",$value['vendor_tx']);
 
                       echo '<tr class="c-table__row">
                             <td class="c-table__cell">'.$i.'</td>
-                            <td class="c-table__cell"><b style="color:#333;">'.$value['subject'].'</b><br/>'.$value['query'].'<br/>'.$ans.'</td>
+                            <td class="c-table__cell">You requested Data Access from <br/><b style="color:#333;">'.$value['patient_tx'].'</b> <br/>Via Plan : <b style="color:#333;">'.$value['plan'].'</b> for <b style="color:#333;">'.$value['days'].' Days</b>, for the Cost of <b style="color:#333;">'.$value['reward point'].' Iotied Coins</b></td>
+                            <td class="c-table__cell"><b style="color:#333;"> '.$vendor['name'].' ('.$vendor['type'].') </b><br/>'.$value['patient_tx'].'</td>
                             <td class="c-table__cell">'.$status.'</td>
-                            <td class="c-table__cell">'.$value['date'].'</td>
                           </tr>';
                         $i++;
                   }           
                 ?>    
               </tbody>
             </table>
-           </div>
           </div>
 
           <div style="padding: 20px;"></div>

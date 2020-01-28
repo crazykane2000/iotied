@@ -66,8 +66,35 @@
                 </a>
               </li>
               <li>
+                <a class="c-sidebar__link" href="view_support.php">
+                  <i class="c-sidebar__icon feather icon-layers"></i>Support
+                </a>
+              </li>
+              <li>
                 <a class="c-sidebar__link" href="view_kyc.php">
-                  <i class="c-sidebar__icon feather icon-book"></i>KYC Requests
+                  <?php $cou = get_count_items("kyc", "status", "Pending");
+                    if ($cou>0) {
+                      $cou = '<span style="padding:5px;background-color:red;color:#fff;border-radius:4px">'.$cou.'</span>';
+                    }
+                    else{
+                      $cou = "";
+                    }
+                   ?>
+                  <i class="c-sidebar__icon feather icon-book"></i>KYC Requests <?php echo $cou;  ?>
+                </a>
+              </li>
+
+              <li>
+                <a class="c-sidebar__link" href="patient_data_access.php">
+                  <?php $cou = get_count_items("request_access", "status", "Pending");
+                    if ($cou>0) {
+                      $cou = '<span style="padding:5px;background-color:red;color:#fff;border-radius:4px">'.$cou.'</span>';
+                    }
+                    else{
+                      $cou = "";
+                    }
+                   ?>
+                  <i class="c-sidebar__icon feather icon-book"></i>Data Access Request<?php echo $cou;  ?>
                 </a>
               </li>
               

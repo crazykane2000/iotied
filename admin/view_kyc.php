@@ -39,7 +39,7 @@
              
 
             <div class="col-12">
-              <div class="card-box items" style="height: 479px;">
+              <div class="card-box items" style="min-height: 700px;">
                 <div style="padding: 10px;"></div>
                  <h3 style="color: #333;text-align:left;font-size: 20px">KYC Documents </h3>
                  <hr style="opacity: .3;margin:20px 0px;">
@@ -79,7 +79,7 @@
                                     <td>'.$value['document_name'].'<br/><span style="font-size:12px;">Date : '.$value['date'].'</span></td>
                                     <td><b style="color:#333;">'.$value['username'].'</b><br/> Email : '.$value['email'].'</td>
                                     <td>'.$value['date'].'</td>
-                                    <td><a target="_blank" href="kyc_documents/'.$value['file'].'" style="color:#555;text-decoration:underline">Document'.$i.'</a></td>
+                                    <td><a target="_blank" href="../kyc_documents/'.$value['file'].'" style="color:#555;text-decoration:underline">Document'.$i.'</a></td>
                                     <td>'.$statys.'</td> 
                                     <td>'.$btn.'</td>                             
                                   </tr>';

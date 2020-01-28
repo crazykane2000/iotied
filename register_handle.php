@@ -58,7 +58,7 @@
         $uniq = $response['address'];
         // add 500 Token Balance Default
         $tx_address = $uniq;
-        $amount = 500;
+        $amount = 0;
         add_wallet_balance($tx_address,$amount);
 
         $key_list = "`name`, `email`, `verified`, `password`,`tx_address`, `country`, `type`";

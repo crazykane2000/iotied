@@ -25,11 +25,11 @@
                 </a>
               </li> 
 
-             <!--  <li>
-                <a class="c-sidebar__link" href="buy.php">
-                  <i class="c-sidebar__icon feather icon-home"></i>Buy Tokens
+              <li>
+                <a class="c-sidebar__link" href="buy_request.php">
+                  <i class="c-sidebar__icon feather icon-home"></i>Buy Request
                 </a>
-              </li>     -->
+              </li>    
   
 
                <li>
@@ -73,6 +73,10 @@
                <li>
                 <a class="c-sidebar__link" href="view_producers.php">
                   <i class="c-sidebar__icon feather icon-users"></i>Total Producers
+                </a>
+              </li><li>
+                <a class="c-sidebar__link" href="view_request_to_access.php">
+                  <i class="c-sidebar__icon feather icon-users"></i>View Access requests
                 </a>
               </li>
               <li>

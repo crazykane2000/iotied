@@ -1,4 +1,4 @@
-<?php session_start();
+  <?php session_start();
     include 'administrator/connection.php';
     include 'administrator/function.php';
     $pdo_auth = authenticate();
@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Dashboard  | Iotied</title>
+    <title>Search Data  | Iotied</title>
     <meta name="description" content="Iotied">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
@@ -27,12 +27,8 @@
         <?php include 'header.php'; ?>
 
         <div class="container-fluid">
-          
-          
-
+         
           <?php $curl = curl_init();
-
-          //echo $pdo_auth['tx_address'];
               curl_setopt_array($curl, array(
                 CURLOPT_PORT => "3005",
                 CURLOPT_URL => "http://13.233.7.230:3005/api/dataManager/get/patients",
@@ -61,18 +57,20 @@
               } 
               //print_r($response);
               ?>
-          <div class="row" style="min-height: 70vh">
+          <div class="row">
             <div class="col-12">
-              <div class="c-table-responsive@wide">
-                <table class="c-table">
+              <h4>White Listed Producers</h4>
+              <div style="padding: 10px;"></div>
+              <div class="c-table-responsive@wide" style="">
+               <div style="padding: 10px;min-height: 700px;background-color: #fff;">
+                  <table class="c-table">
                   <thead class="c-table__head">
                     <tr class="c-table__row">
-                      <th class="c-table__cell c-table__cell--head">Producers</th>
-                      <th class="c-table__cell c-table__cell--head">Block No.</th>
-                      <th class="c-table__cell c-table__cell--head">Patient Id</th>
-                      <th class="c-table__cell c-table__cell--head">Country</th>
+                      <th class="c-table__cell c-table__cell--head">Customer</th>
+                      <th class="c-table__cell c-table__cell--head">Contacts</th>
+                      <th class="c-table__cell c-table__cell--head">Blood Group</th>
+                      <th class="c-table__cell c-table__cell--head">ICD Code</th>
                       <th class="c-table__cell c-table__cell--head">Disease Tags</th>
-                      <th class="c-table__cell c-table__cell--head">Status</th>
                       <th class="c-table__cell c-table__cell--head">Actions</th>
                     </tr>
                   </thead>
@@ -89,6 +87,26 @@
 
 
                       foreach ($response as $key => $value) {
+                       
+                        $btns = '<a class="c-dropdown__item dropdown-item" href="request_access.php?address='.$value['patientAddress'].'">Request Access</a>';
+                        $white = '<label class="c-badge c-badge--danger c-badge--small" style="">Not Contacted</label>';
+                        
+                        $count = get_count_items_andd("request_access", "vendor_tx", $pdo_auth['tx_address'], "patient_tx", $value['patientAddress']);
+                       // echo $count;
+                        
+                        if ($count>0) {
+                          $btns = '<a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['patientAddress'].'">Show Details</a>';
+                          $white = '<label class="c-badge c-badge--success c-badge--small" style="">Whitelisted</label>';
+                        }
+                        else{continue;}
+                        
+                        $disease_tags = $value['patientData']['Disease Tags'];
+                        $disease_tags_upper = strtoupper($disease_tags);
+                        $sed = strtoupper(trim($_REQUEST['search_term']));
+
+                       
+
+
 
                         $tt = '';
                         if (!in_array(getIfSet($value['patientData']['Disease Tags']), $value)) {
@@ -100,13 +118,13 @@
                         }   
                         else{
                           $tt = '';
-                        }    
+                        }      
 
-                        if ($value['patientData']['ICD Codes']=="") {
-                                  continue;
-                                }        
+                        if ($value['actionPerformed']=="PATIENT UPDATED") {
+                          continue;
+                        }           
 
-                        echo '<tr class="c-table__row">
+                         echo '<tr class="c-table__row">
                                 <td class="c-table__cell">
                                   <div class="o-media">
                                     <div class="o-media__img u-mr-xsmall">
@@ -115,18 +133,19 @@
                                       </div>
                                     </div>
                                     <div class="o-media__body">
-                                      <h6 style="font-size:12px;cursor:pointer;font-weight:bold" data-toggle="modal" data-target="#modal1" >'.substr($value['patientAddress'], 0,16).'...</h6>
+                                      <h6 style="font-size:12px;cursor:pointer;font-weight:bold" data-toggle="modal" data-target="#modal1" ><b  style="color:#2083fe;font-size:15px">'.$value['patientData']['First Name']." ".$value['patientData']['Last Name'].'</b><br/>'.substr($value['patientAddress'], 0,39).'</h6>
                                       <p>'.$value['patientData']['City'].", ".$value['patientData']['State'].", ".$value['patientData']['County'].'</p>
                                     </div>
                                   </div>
                                 </td>
-                                <td class="c-table__cell">'.$value['blockNumber'].'</td>
-                                <th class="c-table__cell" title="'.$value['patientAddress'].'">'.substr($value['patientAddress'], 0,10).'...</th>
-                                <td class="c-table__cell">'.ucfirst($value['patientData']['County']).'</td>
-                                <td class="c-table__cell">
-                                  '.$tt."<span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>".$value['patientData']['ICD Codes']."</span>".'
+                                <td class="c-table__cell">'.$value['patientData']['Contact Email'].'<br/>'.$value['patientData']['Emergency Contact Number'].'</td>
+                                <td style="text-align:center">'.$value['patientData']['Blood Group'].'</td>
+                                <td class="c-table__cell">'."<span style='padding:5px;border:solid 1px #8bc34a;border-radius:3px;margin-right:3px;font-size:12px;'>".$value['patientData']['ICD Codes']."</span>".'</td>
+
+
+                               <td class="c-table__cell">
+                                  '.$tt.'
                                 </td>
-                                <td><label class="c-badge c-badge--success c-badge--small" style="">Whitelisted</label></td>
                                 <td class="c-table__cell">
                                   <div class="c-dropdown dropdown">
                                     <a href="#" class="c-btn c-btn--info has-icon dropdown-toggle" id="dropdownMenuTable1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -134,7 +153,7 @@
                                     </a>
 
                                     <div class="c-dropdown__menu dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuTable1">
-                                      <a class="c-dropdown__item dropdown-item" href="view_data.php?address='.$value['address'].'">Show Details</a>
+                                      '.$btns.'
                                     </div>
                                   </div>
                                 </td>
@@ -142,65 +161,19 @@
                       }
                      ?>
 
-                     
-
                    
                   </tbody>
                 </table>
+               </div>
               </div>
             </div>
-          </div>
-         <?php include 'footer.php'; ?>
+          </div>          
+          <?php include 'footer.php';  ?>
         </div>
       </main>
     </div>
     <script src="js/neat.minc619.js?v=1.0"></script>
     
-
-    <div class="c-modal modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1">
-        <div class="c-modal__dialog modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="c-card u-p-medium u-mh-auto" style="max-width:500px;">
-                    <h3>Whitelisted User Information</h3>
-                    <hr/>
-                    <div style="padding: 10px;"></div>
-                    <table class="c-table" style="font-size: 12px;">
-                      <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;">Address</td>
-                        <td style="padding:10px;">0x8db058e36f1672a4cf965be8f349a032c5868c58</td>
-                      </tr>
-
-                      <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;">Patient Id </td>
-                        <td style="padding:10px;">0x99058e36f1672a4cf965be8f349a032c5868889</td>
-                      </tr>
-
-                      <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;">DNA </td>
-                        <td style="padding:10px;">depEyEGkiOQAOXpk4W4gaIh9MqcBeafFT</td>
-                      </tr>
-
-                      <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;">Biometric Id </td>
-                        <td style="padding:10px;">X2tDZmETJIYtq14YtjZLBEfFYCOKGY</td>
-                      </tr>
-
-                       <tr style="border-bottom: solid 1px #eee;">
-                        <td style="padding:10px;"><img src="12.png"> </td>
-                      </tr>
-
-
-                    </table>
-                    <div style="padding: 10px;"></div>
-                    <button class="c-btn c-btn--danger" data-dismiss="modal">
-                        Close Now
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
   </body>
 
 </html>

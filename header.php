@@ -3,7 +3,7 @@
             <i class="feather icon-align-left"></i>
           </button>
 
-          <h2 class="c-navbar__title"><?php echo $_SESSION['role']; ?> Dashboard</h2>
+          <h2 class="c-navbar__title"><?php echo $pdo_auth['type']; ?> Dashboard</h2>
 
           <div class="c-dropdown dropdown u-mr-small">
             <div class="c-notification dropdown-toggle" id="dropdownMenuToggle1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">

@@ -33,7 +33,7 @@
           <div class="row" style="min-height: 75vh">
             <div class="col-12">
               <div class="c-table-responsive@wide">
-                 <div style="padding: 30px;background-color: #fff;">
+                 <div style="padding: 30px;background-color: #fff;min-height: 700px">
                 All <?php echo $_REQUEST['type']; ?> </h3>
                   <div style="padding: 20px;"></div>
                    <table class="c-table">
